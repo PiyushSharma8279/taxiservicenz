@@ -34,9 +34,16 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row justify-between items-center text-sm">
           <p>&copy; 2024 Taxi Services LTD. All rights reserved.</p>
           <div className="flex space-x-6 mt-4 md:mt-0">
-            <p className="hover:text-yellow-400 transition">Privacy Policy</p>
-            <p className="hover:text-yellow-400 transition">Terms of Service</p>
-            <p className="hover:text-yellow-400 transition">Contact Us</p>
+       <a href="/privacy-policy" className="hover:text-yellow-400 transition">
+  Privacy Policy
+</a>
+<a href="/terms" className="hover:text-yellow-400 transition">
+  Terms of Service
+</a>
+<a href="#contact" className="hover:text-yellow-400 transition">
+  Contact Us
+</a>
+
           </div>
         </div>
       </div>
