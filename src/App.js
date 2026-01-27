@@ -1,21 +1,21 @@
 import { useState } from 'react';
-import Header from './Components/Header/Header';
-import Home from './Components/Home/Home';
-import Footer from './Components/Footer/Footer';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import HomePage from './Pages/HomePage';
+import { Login } from './Components/Home/Login';
+import BecomeADriverForm from './Pages/BecomeADriver';
 
 function App() {
-  const [selectedService, setSelectedService] = useState('taxi');
-
-  const handleServiceChange = (serviceId) => {
-    setSelectedService(serviceId);
-  };
+ 
 
   return (
-    <div className="min-h-screen bg-white">
-      <Header onServiceChange={handleServiceChange} />
-      <Home selectedService={selectedService} />
-      <Footer />
-    </div>
+   <BrowserRouter>
+   <Routes>
+    <Route path='/' element={<HomePage/>} />
+    <Route path='/login' element={<Login/>} />
+    <Route path='/Become-a-driver' element={<BecomeADriverForm/>} />
+   </Routes>
+   
+   </BrowserRouter>
   );
 }
 

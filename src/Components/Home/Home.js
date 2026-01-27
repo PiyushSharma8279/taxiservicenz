@@ -94,129 +94,144 @@ export default function Home({ selectedService = 'taxi' }) {
 
             {/* Booking Form Section */}
             {/* Booking Form Section */}
-            <div className="bg-white py-16 px-4">
-                <div className="max-w-7xl mx-auto">
-                    <div className="bg-yellow-400 rounded-2xl shadow-xl p-8 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                        {/* LEFT: FORM */}
-                        <form onSubmit={handleSubmit} className="space-y-5">
-                            <h1 className="text-3xl md:text-3xl font-bold mb-4">{currentService.title}</h1>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                {/* Pick Up */}
-                                <div>
-                                    <label className="block font-semibold text-black mb-1">
-                                        Pick Up Location
-                                    </label>
+            <div id="home" className="w-full">
+                {/* BOOKING FORM */}
+                <div className="bg-white py-16 px-4">
+                    <div className="max-w-7xl mx-auto">
+                        <div className="bg-yellow-400 rounded-2xl shadow-xl p-8 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+
+                            {/* LEFT: FORM */}
+                            <form onSubmit={handleSubmit} className="space-y-5">
+                                <h1 className="text-3xl font-bold mb-4">
+                                    {currentService.title}
+                                </h1>
+
+                                {/* RIDE DETAILS */}
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <input
                                         type="text"
                                         name="pickupLocation"
                                         placeholder="Pick Up Location"
                                         value={formData.pickupLocation}
                                         onChange={handleChange}
-                                        className="w-full px-4 py-3 rounded-lg outline-none"
+                                        required
+                                        className="px-4 py-3 rounded-lg outline-none"
                                     />
-                                </div>
 
-                                {/* Drop Off */}
-                                <div>
-                                    <label className="block font-semibold text-black mb-1">
-                                        Drop Off Location
-                                    </label>
                                     <input
                                         type="text"
                                         name="dropoffLocation"
                                         placeholder="Drop Off Location"
                                         value={formData.dropoffLocation}
                                         onChange={handleChange}
-                                        className="w-full px-4 py-3 rounded-lg outline-none"
+                                        required
+                                        className="px-4 py-3 rounded-lg outline-none"
                                     />
-                                </div>
 
-                                {/* Cab Type */}
-                                <div>
-                                    <label className="block font-semibold text-black mb-1">
-                                        Cab Type
-                                    </label>
                                     <select
                                         name="cabType"
                                         value={formData.cabType}
                                         onChange={handleChange}
-                                        className="w-full px-4 py-3 rounded-lg outline-none"
+                                        className="px-4 py-3 rounded-lg outline-none"
                                     >
                                         <option>Economy</option>
                                         <option>Comfort</option>
                                         <option>Premium</option>
                                     </select>
-                                </div>
 
-                                {/* Pick Up Date */}
-                                <div>
-                                    <label className="block font-semibold text-black mb-1">
-                                        Pick Up Date
-                                    </label>
                                     <input
                                         type="date"
                                         name="pickupDate"
                                         value={formData.pickupDate}
                                         onChange={handleChange}
-                                        className="w-full px-4 py-3 rounded-lg outline-none"
+                                        required
+                                        className="px-4 py-3 rounded-lg outline-none"
                                     />
-                                </div>
 
-                                {/* Pick Up Time */}
-                                <div>
-                                    <label className="block font-semibold text-black mb-1">
-                                        Pick Up Time
-                                    </label>
                                     <input
                                         type="time"
                                         name="pickupTime"
                                         value={formData.pickupTime}
                                         onChange={handleChange}
-                                        className="w-full px-4 py-3 rounded-lg outline-none"
+                                        required
+                                        className="px-4 py-3 rounded-lg outline-none"
                                     />
-                                </div>
 
-                                {/* Passengers */}
-                                <div>
-                                    <label className="block font-semibold text-black mb-1">
-                                        Passengers
-                                    </label>
                                     <input
                                         type="number"
                                         min="1"
                                         name="passengers"
                                         value={formData.passengers}
                                         onChange={handleChange}
-                                        className="w-full px-4 py-3 rounded-lg outline-none"
+                                        className="px-4 py-3 rounded-lg outline-none"
                                     />
                                 </div>
-                            </div>
 
-                            {/* Book Button */}
-                            <button
-                                type="submit"
-                                className="w-full bg-black text-white font-bold py-3 rounded-lg hover:bg-gray-900 transition"
-                            >
-                                BOOK NOW
-                            </button>
+                                {/* USER DETAILS */}
+                                <div className="pt-4">
+                                    <h2 className="text-xl font-bold mb-3">
+                                        Your Details
+                                    </h2>
 
-                            {/* Mobile image: show only on mobile, below BOOK NOW */}
-                            <div className="mt-6 lg:hidden flex justify-center">
+                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                        <input
+                                            type="text"
+                                            name="name"
+                                            placeholder="Full Name"
+                                            value={formData.name}
+                                            onChange={handleChange}
+                                            required
+                                            className="px-4 py-3 rounded-lg outline-none"
+                                        />
+
+                                        <input
+                                            type="email"
+                                            name="email"
+                                            placeholder="Email Address"
+                                            value={formData.email}
+                                            onChange={handleChange}
+                                            required
+                                            className="px-4 py-3 rounded-lg outline-none"
+                                        />
+
+                                        <input
+                                            type="tel"
+                                            name="phone"
+                                            placeholder="+64 00 000 0000"
+                                            value={formData.phone}
+                                            onChange={handleChange}
+                                            required
+                                            className="px-4 py-3 rounded-lg outline-none"
+                                        />
+                                    </div>
+                                </div>
+
+                                {/* BOOK BUTTON */}
+                                <button
+                                    type="submit"
+                                    className="w-full bg-black text-white font-bold py-3 rounded-lg hover:bg-gray-900 transition"
+                                >
+                                    BOOK NOW
+                                </button>
+
+                                {/* Mobile Image */}
+                                <div className="mt-6 lg:hidden flex justify-center">
+                                    <img
+                                        src="/car.png"
+                                        alt="Taxi"
+                                        className="max-h-[220px] object-contain"
+                                    />
+                                </div>
+                            </form>
+
+                            {/* RIGHT IMAGE */}
+                            <div className="hidden lg:flex justify-center">
                                 <img
                                     src="/car.png"
                                     alt="Taxi"
-                                    className="max-h-[220px] object-contain"
+                                    className="max-h-[320px] object-contain"
                                 />
                             </div>
-                        </form>
-
-                        {/* RIGHT: IMAGE for desktop */}
-                        <div className="hidden lg:flex justify-center">
-                            <img
-                                src="/car.png"
-                                alt="Taxi"
-                                className="max-h-[320px] object-contain"
-                            />
                         </div>
                     </div>
                 </div>

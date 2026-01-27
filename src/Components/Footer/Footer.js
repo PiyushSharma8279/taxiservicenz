@@ -1,54 +1,77 @@
-import React from 'react';
+import React from "react";
 
 export default function Footer() {
   return (
-    <footer id="contact" className="bg-gray-900 text-gray-300">
+    <footer id="contact" className="bg-white text-black">
       <div className="max-w-7xl mx-auto px-4 py-16">
-        {/* Main Footer Content */}
-        <div className="mb-8">
-          {/* Company Info */}
+        {/* Top Section */}
+        <div className="flex flex-col lg:flex-row justify-between gap-12">
+          {/* Left: Logo + Description */}
+          <div className="max-w-sm">
+            <div className="flex items-center gap-3 mb-4">
+              {/* Replace with your logo image if needed */}
+              <span className="text-3xl font-bold">🚕</span>
+              <h3 className="text-2xl font-extrabold">Taxi Service</h3>
+            </div>
+            <p className="text-sm leading-relaxed text-gray-700">
+              New Zealand offers several reliable cab services known
+              for their convenience, safety, and customer satisfaction.
+            </p>
+          </div>
+
+          {/* Right: Main Features */}
           <div>
-            <h3 className="text-2xl font-bold text-white mb-4">🚕 TaxiService</h3>
-            <p className="text-sm mb-4">The fastest way to book a taxi in New Zealand.</p>
-            <div className="flex flex-col md:flex-row w-full gap-6 md:gap-12">
-              <p className="flex items-center space-x-2">
-                <span>📍</span>
-                <span>New Zealand</span>
-              </p>
-              {/* <p className="flex items-center space-x-2">
-                <span>📞</span>
-                <a href="tel:+64277777267" className="hover:text-yellow-400 transition">+64 27 777 7267</a>
-              </p>
-              <p className="flex items-center space-x-2">
-                <span>📧</span>
-                <a href="mailto:info@taxiservice.co.nz" className="hover:text-yellow-400 transition">info@taxiservice.co.nz</a>
-              </p> */}
+            <h4 className="text-lg font-bold mb-4">MAIN FEATURES</h4>
+            <div className="flex flex-wrap gap-3">
+              {[
+                "The Last Ride (Death Taxi)",
+                "Ambulance",
+                "Car Rentals",
+                "Coupon",
+                "Vehicle Tag",
+              ].map((item) => (
+                <span
+                  key={item}
+                  className="px-5 py-2 border border-black rounded-full text-sm hover:bg-black hover:text-white transition cursor-pointer"
+                >
+                  {item}
+                </span>
+              ))}
             </div>
           </div>
         </div>
 
-        {/* Divider */}
-        <div className="border-t border-gray-700 my-8"></div>
-
-        {/* Bottom Footer */}
-        <div className="flex flex-col md:flex-row justify-between items-center text-sm">
-          <p>&copy; 2024 Taxi Services LTD. All rights reserved.</p>
-          <div className="flex space-x-6 mt-4 md:mt-0">
-            <button className="hover:text-yellow-400 transition">
-              Privacy Policy
-            </button>
-            <button className="hover:text-yellow-400 transition">
-              Terms of Service
-            </button>
-            <button
-              className="hover:text-yellow-400 transition"
-              onClick={() =>
-                document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })
-              }
-            >
-              Contact Us
-            </button>
+        {/* Address Bar */}
+        <div className="mt-16 bg-gray-100 rounded-2xl px-6 py-5 flex flex-col md:flex-row justify-around items-center gap-4 text-sm">
+          <div className="flex items-center gap-2">
+            <span>📍</span>
+            <span>New Zealand</span>
           </div>
+
+          <div className="flex items-center gap-2">
+            <span>📞</span>
+            <a
+              href="tel:+64277777267"
+              className="hover:underline"
+            >
+              +64 27 777 7267
+            </a>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <span>✉️</span>
+            <a
+              href="mailto:info@taxiservice.co.nz"
+              className="hover:underline"
+            >
+              info@taxiservice.co.nz
+            </a>
+          </div>
+        </div>
+
+        {/* Bottom Copyright */}
+        <div className="mt-8 text-center text-xs text-gray-600">
+          © Taxi Services 2023 LTD, All Rights Reserved.
         </div>
       </div>
     </footer>
