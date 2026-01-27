@@ -15,14 +15,14 @@ export default function Footer() {
                 <span>📍</span>
                 <span>New Zealand</span>
               </p>
-              <p className="flex items-center space-x-2">
+              {/* <p className="flex items-center space-x-2">
                 <span>📞</span>
                 <a href="tel:+64277777267" className="hover:text-yellow-400 transition">+64 27 777 7267</a>
               </p>
               <p className="flex items-center space-x-2">
                 <span>📧</span>
                 <a href="mailto:info@taxiservice.co.nz" className="hover:text-yellow-400 transition">info@taxiservice.co.nz</a>
-              </p>
+              </p> */}
             </div>
           </div>
         </div>
