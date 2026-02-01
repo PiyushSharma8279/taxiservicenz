@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import HomeOptions from './HomeOption';
 
 export default function Home({ selectedService = 'taxi' }) {
     const [formData, setFormData] = useState({
@@ -7,7 +8,11 @@ export default function Home({ selectedService = 'taxi' }) {
         pickupDate: '',
         pickupTime: '',
         passengers: '1',
-        cabType: 'economy'
+        cabType: 'economy',
+        seaterType: '4seater',
+        name: '',
+        email: '',
+        phone: ''
     });
 
     const serviceConfig = {
@@ -70,6 +75,29 @@ export default function Home({ selectedService = 'taxi' }) {
 
     const currentService = serviceConfig[selectedService] || serviceConfig.taxi;
 
+    const seaterOptions = [
+        { value: '4seater', label: '4 Seater' },
+        { value: '6seater', label: '6 Seater' },
+        { value: '8seater', label: '8 Seater' },
+        { value: '10seater', label: '10 Seater' },
+        { value: '12seater', label: '12 Seater' }
+    ];
+
+    const CabType = [
+        { value: 'Economy', label: 'Economy' },
+        { value: 'Comfort', label: 'Comfort' },
+        { value: 'Premium', label: 'Premium' },
+        { value: 'Luxury', label: 'Luxury' },
+        { value: 'Executive', label: 'Executive' }
+    ];
+    const [selectedHomeOption, setSelectedHomeOption] = useState("");
+
+    // Clear selected option when service changes so previous selection doesn't persist
+    useEffect(() => {
+        setSelectedHomeOption("");
+    }, [selectedService]);
+
+
 
     const handleChange = (e) => {
         setFormData({
@@ -83,8 +111,27 @@ export default function Home({ selectedService = 'taxi' }) {
         console.log('Booking submitted:', { service: selectedService, ...formData });
     };
 
+    useEffect(() => {
+        const handler = (e) => {
+            setSelectedHomeOption(e.detail.option);
+        };
+
+        window.addEventListener("home-option-change", handler);
+
+        return () => {
+            window.removeEventListener("home-option-change", handler);
+        };
+    }, []);
+
+
     return (
         <div id="home" className="w-full">
+            <div className="flex justify-center w-full">
+                <div className="max-w-7xl w-full flex justify-center">
+                    <HomeOptions service={selectedService} />
+                </div>
+            </div>
+
             {/* Hero Section */}
             {/* <div className="relative bg-gradient-to-r from-yellow-400 to-yellow-500 text-white py-20 px-4">
                 <div className="max-w-7xl mx-auto">
@@ -96,15 +143,21 @@ export default function Home({ selectedService = 'taxi' }) {
             {/* Booking Form Section */}
             <div id="home" className="w-full">
                 {/* BOOKING FORM */}
-                <div className="bg-white py-16 px-4">
+                <div className="bg-white pb-16 pt-8 px-8">
                     <div className="max-w-7xl mx-auto">
                         <div className="bg-yellow-400 rounded-2xl shadow-xl p-8 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
 
                             {/* LEFT: FORM */}
                             <form onSubmit={handleSubmit} className="space-y-5">
                                 <h1 className="text-3xl font-bold mb-4">
-                                    {currentService.title}
+                                    {currentService.title} {selectedHomeOption}
                                 </h1>
+{/* 
+                                {selectedHomeOption && (
+                                    <p className="text-sm font-semibold text-black bg-yellow-300 inline-block px-3 py-1 rounded-full">
+                                        Selected: {selectedHomeOption}
+                                    </p>
+                                )} */}
 
                                 {/* RIDE DETAILS */}
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -129,15 +182,40 @@ export default function Home({ selectedService = 'taxi' }) {
                                     />
 
                                     <select
-                                        name="cabType"
-                                        value={formData.cabType}
+                                        name="seaterType"
+                                        value={formData.seaterType}
                                         onChange={handleChange}
                                         className="px-4 py-3 rounded-lg outline-none"
                                     >
-                                        <option>Economy</option>
-                                        <option>Comfort</option>
-                                        <option>Premium</option>
+                                        {seaterOptions.map(option => (
+                                            <option key={option.value} value={option.value}>
+                                                {option.label}
+                                            </option>
+                                        ))}
                                     </select>
+                                    <select
+                                        name="CabType"
+                                        value={formData.CabType}
+                                        onChange={handleChange}
+                                        className="px-4 py-3 rounded-lg outline-none"
+                                    >
+                                        {CabType.map(option => (
+                                            <option key={option.value} value={option.value}>
+                                                {option.label}
+                                            </option>
+                                        ))}
+                                    </select>
+
+                                    <input
+                                        type="number"
+                                        name="passengers"
+                                        value={formData.passengers}
+                                        onChange={handleChange}
+                                        required
+                                        className="px-4 py-3 rounded-lg outline-none"
+                                    />
+
+
 
                                     <input
                                         type="date"
@@ -145,24 +223,6 @@ export default function Home({ selectedService = 'taxi' }) {
                                         value={formData.pickupDate}
                                         onChange={handleChange}
                                         required
-                                        className="px-4 py-3 rounded-lg outline-none"
-                                    />
-
-                                    <input
-                                        type="time"
-                                        name="pickupTime"
-                                        value={formData.pickupTime}
-                                        onChange={handleChange}
-                                        required
-                                        className="px-4 py-3 rounded-lg outline-none"
-                                    />
-
-                                    <input
-                                        type="number"
-                                        min="1"
-                                        name="passengers"
-                                        value={formData.passengers}
-                                        onChange={handleChange}
                                         className="px-4 py-3 rounded-lg outline-none"
                                     />
                                 </div>

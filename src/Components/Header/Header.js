@@ -1,29 +1,38 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
-const DESKTOP_ITEM = 96; // px
+const DESKTOP_ITEM = 96;
 const GAP = 12;
 const DESKTOP_VISIBLE = 6;
 
 export default function Header({ onServiceChange }) {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [selectedService, setSelectedService] = useState("taxi");
   const navigate = useNavigate();
 
   const services = [
-    "Taxi",
-    "Outstation",
-    "Car Rentals",
-    "Tourism",
-    "Deals",
-    "Lift",
-    "Explore",
-    "Drivers",
-    "Events",
-    "Ambulance",
-    "Drink Drive",
+    { label: "Taxi", img: "/car.png" },
+    { label: "Outstation", img: "/outstation.jpg" },
+    { label: "Car Rentals", img: "/car.png" },
+    { label: "Tourism", img: "/car.png" },
+    { label: "Deals", img: "/car.png" },
+    { label: "Lift", img: "/car.png" },
+    { label: "Explore", img: "/car.png" },
+    { label: "Drivers", img: "/car.png" },
+    { label: "Events", img: "/car.png" },
+    { label: "Ambulance", img: "/car.png" },
+    { label: "Drink Drive", img: "/car.png" },
   ];
 
   const maxIndex = services.length - DESKTOP_VISIBLE;
+  const translateX = currentIndex * (DESKTOP_ITEM + GAP);
+
+  const handleServiceClick = (label) => {
+    const key = label.toLowerCase().replace(/\s+/g, "");
+    setSelectedService(key);
+    onServiceChange?.(key);
+  };
 
   const next = () => {
     if (currentIndex < maxIndex) setCurrentIndex((i) => i + 1);
@@ -33,54 +42,51 @@ export default function Header({ onServiceChange }) {
     if (currentIndex > 0) setCurrentIndex((i) => i - 1);
   };
 
-  const translateX = currentIndex * (DESKTOP_ITEM + GAP);
+  const isActive = (label) =>
+    selectedService === label.toLowerCase().replace(/\s+/g, "");
 
   return (
     <header className="sticky top-0 z-50 bg-white shadow-sm">
-      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* MAIN CONTAINER */}
-        <div className="flex flex-col lg:flex-row gap-3 py-3 lg:items-center lg:h-28">
+      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <div className="flex flex-col lg:flex-row gap-4 py-3 lg:items-center lg:h-28">
 
           {/* LOGO */}
-          <img
-            src="/TaxiLogo.png"
-            alt="Taxi Logo"
-            className="h-10 w-16 lg:h-20 lg:w-20 object-contain cursor-pointer"
-            onClick={() => navigate("/")}
-          />
+          <div className="flex justify-center lg:justify-start">
+            <img
+              src="/TaxiLogo.png"
+              alt="Taxi Logo"
+              className="h-10 w-16 lg:h-20 lg:w-20 object-contain cursor-pointer"
+              onClick={() => navigate("/")}
+            />
+          </div>
 
-          {/* MOBILE SERVICES SCROLL */}
-          <div className="flex lg:hidden w-full overflow-x-auto scrollbar-hide gap-3 py-2">
-            {services.map((label) => (
+          {/* MOBILE SERVICES */}
+          <div className="flex lg:hidden w-full overflow-x-auto scrollbar-hide gap-3 py-2 justify-start pl-3">
+            {services.map((service) => (
               <button
-                key={label}
-                onClick={() => onServiceChange?.(label.toLowerCase())}
-                className="flex-shrink-0 h-10 px-4 rounded-full bg-yellow-100 
-                           text-xs font-semibold text-yellow-700 hover:bg-yellow-200 transition"
+                key={service.label}
+                onClick={() => handleServiceClick(service.label)}
+                className={`flex-shrink-0 h-16 w-16 rounded-full transition 
+                  flex flex-col items-center justify-center
+                  ${
+                    isActive(service.label)
+                      ? "bg-yellow-200 border-2 border-yellow-500"
+                      : "bg-yellow-100 hover:bg-yellow-200"
+                  }`}
               >
-                {label}
+                <img
+                  src={service.img}
+                  alt={service.label}
+                  className="h-6 w-6 object-contain"
+                />
+                <span className="mt-1 text-[10px] font-semibold text-yellow-800 text-center">
+                  {service.label}
+                </span>
               </button>
             ))}
           </div>
 
-          {/* MOBILE AUTH BUTTONS */}
-          <div className="flex lg:hidden w-full gap-2">
-            <button
-              className="flex-1 py-2 bg-yellow-500 text-white rounded-md text-sm font-semibold hover:bg-yellow-600 transition"
-              onClick={() => navigate("/login")}
-            >
-              Login
-            </button>
-
-            <button
-              className="flex-1 py-2 border border-yellow-500 text-yellow-600 rounded-md text-sm font-semibold hover:bg-yellow-50 transition"
-              onClick={() => navigate("/Become-a-driver")}
-            >
-              Become a Driver
-            </button>
-          </div>
-
-          {/* DESKTOP SERVICES CAROUSEL */}
+          {/* DESKTOP SERVICES */}
           <div className="hidden lg:flex items-center justify-center gap-4 flex-1">
 
             <button
@@ -92,7 +98,7 @@ export default function Header({ onServiceChange }) {
                   : "bg-gray-200 hover:bg-gray-300"
                 }`}
             >
-              ◀
+              <FaArrowLeft />
             </button>
 
             <div
@@ -107,17 +113,32 @@ export default function Header({ onServiceChange }) {
                 className="flex gap-3 transition-transform duration-300 ease-out"
                 style={{ transform: `translateX(-${translateX}px)` }}
               >
-                {services.map((label) => (
-                  <button
-                    key={label}
-                    onClick={() => onServiceChange?.(label.toLowerCase())}
-                    className="h-24 w-24 flex-shrink-0 rounded-full 
-                               bg-yellow-100 text-sm font-semibold 
-                               text-yellow-800 hover:bg-yellow-200 transition 
-                               flex items-center justify-center"
+                {services.map((service) => (
+                  <div
+                    key={service.label}
+                    className="flex flex-col items-center flex-shrink-0"
                   >
-                    {label}
-                  </button>
+                    <button
+                      onClick={() => handleServiceClick(service.label)}
+                      className={`h-24 w-24 rounded-full transition
+                        flex items-center justify-center
+                        ${
+                          isActive(service.label)
+                            ? "bg-yellow-200 border-2 border-yellow-500"
+                            : "bg-yellow-100 hover:bg-yellow-200"
+                        }`}
+                    >
+                      <img
+                        src={service.img}
+                        alt={service.label}
+                        className="h-16 w-16 object-contain"
+                      />
+                    </button>
+
+                    <span className="mt-2 text-xs font-semibold text-yellow-800 text-center">
+                      {service.label}
+                    </span>
+                  </div>
                 ))}
               </div>
             </div>
@@ -131,30 +152,12 @@ export default function Header({ onServiceChange }) {
                   : "bg-gray-200 hover:bg-gray-300"
                 }`}
             >
-              ▶
-            </button>
-          </div>
-
-          {/* DESKTOP AUTH BUTTONS */}
-          <div className="hidden lg:flex items-center gap-3 flex-shrink-0">
-            <button
-              className="px-4 py-2 bg-yellow-500 text-white rounded-md text-sm font-semibold hover:bg-yellow-600"
-              onClick={() => navigate("/login")}
-            >
-              Login
-            </button>
-
-            <button
-              className="px-4 py-2 border border-yellow-500 text-yellow-600 rounded-md text-sm font-semibold hover:bg-yellow-50"
-              onClick={() => navigate("/Become-a-driver")}
-            >
-              Become a Driver
+              <FaArrowRight />
             </button>
           </div>
         </div>
       </nav>
 
-      {/* Scrollbar hide */}
       <style jsx>{`
         .scrollbar-hide::-webkit-scrollbar {
           display: none;
