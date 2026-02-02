@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../Components/Header/Header";
 import Footer from "../Components/Footer/Footer";
 
@@ -27,6 +27,9 @@ export default function BecomeADriverForm() {
     city: "",
     referralCode: "",
   });
+   useEffect(() => {
+          window.scrollTo(0, 0);
+      }, []);
 
   // For files, use separate state for simplicity
   const [files, setFiles] = useState({

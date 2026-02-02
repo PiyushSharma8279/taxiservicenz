@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import HomeOptions from './HomeOption';
+import { useNavigate } from 'react-router-dom';
 
 export default function Home({ selectedService = 'taxi' }) {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         pickupLocation: '',
         dropoffLocation: '',
@@ -14,6 +16,10 @@ export default function Home({ selectedService = 'taxi' }) {
         email: '',
         phone: ''
     });
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     const serviceConfig = {
         taxi: {
@@ -143,7 +149,7 @@ export default function Home({ selectedService = 'taxi' }) {
             {/* Booking Form Section */}
             <div id="home" className="w-full">
                 {/* BOOKING FORM */}
-                <div className="bg-white pb-16 pt-8 px-8">
+                <div className="bg-white pt-8 ">
                     <div className="max-w-7xl mx-auto">
                         <div className="bg-yellow-400 rounded-2xl shadow-xl p-8 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
 
@@ -152,7 +158,7 @@ export default function Home({ selectedService = 'taxi' }) {
                                 <h1 className="text-3xl font-bold mb-4">
                                     {currentService.title} {selectedHomeOption}
                                 </h1>
-{/* 
+                                {/* 
                                 {selectedHomeOption && (
                                     <p className="text-sm font-semibold text-black bg-yellow-300 inline-block px-3 py-1 rounded-full">
                                         Selected: {selectedHomeOption}
@@ -295,6 +301,16 @@ export default function Home({ selectedService = 'taxi' }) {
                         </div>
                     </div>
                 </div>
+            </div>
+            <div className="flex flex-col sm:flex-row justify-center gap-4 pb-16 max-w-7xl font-medium mx-auto px-4 mt-4">
+                <p className="w-full sm:w-1/2 bg-yellow-500 p-4 text-xl sm:text-2xl cursor-pointer rounded-xl text-center"
+                onClick={() => navigate("/login")}>
+                    Login
+                </p>
+                <p className="w-full sm:w-1/2 bg-gray-400 p-4 text-xl sm:text-2xl cursor-pointer rounded-xl text-center"
+                onClick={() => navigate("/Become-a-driver")}>
+                    Become a Driver
+                </p>
             </div>
 
 

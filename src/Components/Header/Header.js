@@ -12,17 +12,17 @@ export default function Header({ onServiceChange }) {
   const navigate = useNavigate();
 
   const services = [
-    { label: "Taxi", img: "/car.png" },
-    { label: "Outstation", img: "/outstation.jpg" },
-    { label: "Car Rentals", img: "/car.png" },
-    { label: "Tourism", img: "/car.png" },
-    { label: "Deals", img: "/car.png" },
-    { label: "Lift", img: "/car.png" },
-    { label: "Explore", img: "/car.png" },
-    { label: "Drivers", img: "/car.png" },
-    { label: "Events", img: "/car.png" },
-    { label: "Ambulance", img: "/car.png" },
-    { label: "Drink Drive", img: "/car.png" },
+    { label: "Taxi", img: "/taxi.jpg" },
+    { label: "Outstation", img: "/outstation.png" },
+    { label: "Car Rentals", img: "/car-rentals.png" },
+    { label: "Tourism", img: "/tourism.png" },
+    { label: "Deals", img: "/deals.png" },
+    { label: "Lift", img: "/select-a-city.png" },
+    { label: "Explore", img: "/flight.png" },
+    { label: "Drivers", img: "/deals.png" },
+    { label: "Events", img: "/hotel.png" },
+    { label: "Ambulance", img: "/amb.png" },
+    { label: "Drink Drive", img: "/taxi.jpg" },
   ];
 
   const maxIndex = services.length - DESKTOP_VISIBLE;
