@@ -82,12 +82,10 @@ export default function Home({ selectedService = 'taxi' }) {
     const currentService = serviceConfig[selectedService] || serviceConfig.taxi;
 
     const seaterOptions = [
-        { value: '4seater', label: '4 Seater' },
-        { value: '6seater', label: '6 Seater' },
-        { value: '8seater', label: '8 Seater' },
-        { value: '10seater', label: '10 Seater' },
-        { value: '12seater', label: '12 Seater' }
-    ];
+    { value: '4 Seater', label: '4 Seater' },
+    { value: '6 Seater', label: '6 Seater' },
+    { value: '12 Seater', label: '12 Seater' }
+];
 
     const CabType = [
         { value: 'Economy', label: 'Economy' },
@@ -117,17 +115,25 @@ export default function Home({ selectedService = 'taxi' }) {
         console.log('Booking submitted:', { service: selectedService, ...formData });
     };
 
-    useEffect(() => {
-        const handler = (e) => {
-            setSelectedHomeOption(e.detail.option);
-        };
+   useEffect(() => {
+    const handler = (e) => {
+        const { option, subOption } = e.detail;
 
-        window.addEventListener("home-option-change", handler);
+        setSelectedHomeOption(option);
 
-        return () => {
-            window.removeEventListener("home-option-change", handler);
-        };
-    }, []);
+        if (subOption) {
+            setFormData((prev) => ({
+                ...prev,
+                seaterType: subOption,   // now EXACT SAME
+            }));
+        }
+    };
+
+    window.addEventListener("home-option-change", handler);
+    return () => window.removeEventListener("home-option-change", handler);
+}, []);
+
+
 
 
     return (
