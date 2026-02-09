@@ -82,10 +82,10 @@ export default function Home({ selectedService = 'taxi' }) {
     const currentService = serviceConfig[selectedService] || serviceConfig.taxi;
 
     const seaterOptions = [
-    { value: '4 Seater', label: '4 Seater' },
-    { value: '6 Seater', label: '6 Seater' },
-    { value: '12 Seater', label: '12 Seater' }
-];
+        { value: '4 Seater', label: '4 Seater' },
+        { value: '6 Seater', label: '6 Seater' },
+        { value: '12 Seater', label: '12 Seater' }
+    ];
 
     const CabType = [
         { value: 'Economy', label: 'Economy' },
@@ -115,23 +115,23 @@ export default function Home({ selectedService = 'taxi' }) {
         console.log('Booking submitted:', { service: selectedService, ...formData });
     };
 
-   useEffect(() => {
-    const handler = (e) => {
-        const { option, subOption } = e.detail;
+    useEffect(() => {
+        const handler = (e) => {
+            const { option, subOption } = e.detail;
 
-        setSelectedHomeOption(option);
+            setSelectedHomeOption(option);
 
-        if (subOption) {
-            setFormData((prev) => ({
-                ...prev,
-                seaterType: subOption,   // now EXACT SAME
-            }));
-        }
-    };
+            if (subOption) {
+                setFormData((prev) => ({
+                    ...prev,
+                    seaterType: subOption,   // now EXACT SAME
+                }));
+            }
+        };
 
-    window.addEventListener("home-option-change", handler);
-    return () => window.removeEventListener("home-option-change", handler);
-}, []);
+        window.addEventListener("home-option-change", handler);
+        return () => window.removeEventListener("home-option-change", handler);
+    }, []);
 
 
 
@@ -161,9 +161,16 @@ export default function Home({ selectedService = 'taxi' }) {
 
                             {/* LEFT: FORM */}
                             <form onSubmit={handleSubmit} className="space-y-5">
-                                <h1 className="text-3xl font-bold mb-4">
-                                    {currentService.title} {selectedHomeOption}
+                                <h1 className="text-3xl font-bold mb-2">
+                                    {currentService.title}   {selectedHomeOption && (
+                                   <>
+                                        {selectedHomeOption} - {formData.seaterType}
+                                 </>
+                                )}
                                 </h1>
+
+                              
+
                                 {/* 
                                 {selectedHomeOption && (
                                     <p className="text-sm font-semibold text-black bg-yellow-300 inline-block px-3 py-1 rounded-full">
@@ -310,11 +317,11 @@ export default function Home({ selectedService = 'taxi' }) {
             </div>
             <div className="flex flex-col sm:flex-row justify-center gap-4 pb-16 max-w-7xl font-medium mx-auto px-4 mt-4">
                 <p className="w-full sm:w-1/2 bg-yellow-500 p-4 text-xl sm:text-2xl cursor-pointer rounded-xl text-center"
-                onClick={() => navigate("/login")}>
+                    onClick={() => navigate("/login")}>
                     Login
                 </p>
                 <p className="w-full sm:w-1/2 bg-gray-400 p-4 text-xl sm:text-2xl cursor-pointer rounded-xl text-center"
-                onClick={() => navigate("/Become-a-driver")}>
+                    onClick={() => navigate("/Become-a-driver")}>
                     Become a Driver
                 </p>
             </div>
