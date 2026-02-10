@@ -25,9 +25,9 @@ const CAB_SEATERS = [
   { label: "4 Seater" },
   { label: "6 Seater" },
   { label: "12 Seater" },
-];
+];  
 
-export default function HomeOptions({ service }) {
+export default function HomeOptions({ service, onOptionSelect, onSeaterSelect }) {
   const options = SERVICE_OPTIONS[service];
 
   const [selectedOption, setSelectedOption] = useState(null);
@@ -40,6 +40,7 @@ export default function HomeOptions({ service }) {
 
   if (!service || !options) return null;
 
+  
   return (
     <div className="px-4 mt-4 w-full flex flex-col items-center gap-3">
 
@@ -54,6 +55,7 @@ export default function HomeOptions({ service }) {
               onClick={() => {
                 setSelectedOption(option.label);
                 setSelectedSubOption(null);
+                onOptionSelect?.(option.label);
 
                 window.dispatchEvent(
                   new CustomEvent("home-option-change", {
@@ -96,6 +98,7 @@ export default function HomeOptions({ service }) {
                 key={seat.label}
                 onClick={() => {
                   setSelectedSubOption(seat.label);
+                  onSeaterSelect?.(seat.label);
 
                   window.dispatchEvent(
                     new CustomEvent("home-option-change", {

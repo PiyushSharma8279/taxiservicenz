@@ -12,7 +12,7 @@ export default function Header({ onServiceChange }) {
   const navigate = useNavigate();
 
   const services = [
-    { label: "Taxi", img: "/taxi.jpg" },
+    { label: "Taxi", img: "/TaxiLogo.png" },
     { label: "Outstation", img: "/outstation.png" },
     { label: "Car Rentals", img: "/car-rentals.png" },
     { label: "Tourism", img: "/tourism.png" },
@@ -51,7 +51,7 @@ export default function Header({ onServiceChange }) {
         <div className="flex flex-col lg:flex-row gap-4 py-3 lg:items-center lg:h-28">
 
           {/* LOGO */}
-          <div className="flex justify-center lg:justify-start">
+          <div className=" hidden lg:flex lg:justify-center lg:justify-start">
             <img
               src="/TaxiLogo.png"
               alt="Taxi Logo"
@@ -63,26 +63,26 @@ export default function Header({ onServiceChange }) {
           {/* MOBILE SERVICES */}
           <div className="flex lg:hidden w-full overflow-x-auto scrollbar-hide gap-3 py-2 justify-start pl-3">
             {services.map((service) => (
-              <button
-                key={service.label}
-                onClick={() => handleServiceClick(service.label)}
-                className={`flex-shrink-0 h-16 w-16 rounded-full transition 
-                  flex flex-col items-center justify-center
-                  ${
-                    isActive(service.label)
-                      ? "bg-yellow-200 border-2 border-yellow-500"
-                      : "bg-yellow-100 hover:bg-yellow-200"
-                  }`}
-              >
-                <img
-                  src={service.img}
-                  alt={service.label}
-                  className="h-6 w-6 object-contain"
-                />
-                <span className="mt-1 text-[10px] font-semibold text-yellow-800 text-center">
+              <div key={service.label} className="flex-shrink-0 flex flex-col items-center">
+                <button
+                  onClick={() => handleServiceClick(service.label)}
+                  className={`h-16 w-16 rounded-full transition flex items-center justify-center
+                    ${
+                      isActive(service.label)
+                        ? "bg-yellow-200 border-2 border-yellow-500"
+                        : "bg-yellow-100 hover:bg-yellow-200"
+                    }`}
+                >
+                  <img
+                    src={service.img}
+                    alt={service.label}
+                    className="h-10 w-10 object-contain transition-transform transform hover:scale-110 active:scale-95"
+                  />
+                </button>
+                <span className="mt-2 text-xs font-semibold text-yellow-800 text-center">
                   {service.label}
                 </span>
-              </button>
+              </div>
             ))}
           </div>
 

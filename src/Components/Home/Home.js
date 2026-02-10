@@ -10,11 +10,14 @@ export default function Home({ selectedService = 'taxi' }) {
         pickupDate: '',
         pickupTime: '',
         passengers: '1',
-        cabType: 'economy',
-        seaterType: '4seater',
+        cabType: 'Economy',
+        seaterType: '4 Seater',
         name: '',
         email: '',
-        phone: ''
+        phone: '',
+        bigBoot: false,
+        smallBoot: false,
+        luxury: false
     });
 
     useEffect(() => {
@@ -104,10 +107,22 @@ export default function Home({ selectedService = 'taxi' }) {
 
 
     const handleChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value
-        });
+        const { name, type, value, checked } = e.target;
+
+        // Handle mutually exclusive checkboxes for boot options
+        if (['bigBoot', 'smallBoot', 'luxury'].includes(name)) {
+            setFormData((prev) => ({
+                ...prev,
+                bigBoot: name === 'bigBoot' ? checked : false,
+                smallBoot: name === 'smallBoot' ? checked : false,
+                luxury: name === 'luxury' ? checked : false
+            }));
+        } else {
+            setFormData((prev) => ({
+                ...prev,
+                [name]: type === 'checkbox' ? checked : value
+            }));
+        }
     };
 
     const handleSubmit = (e) => {
@@ -133,14 +148,28 @@ export default function Home({ selectedService = 'taxi' }) {
         return () => window.removeEventListener("home-option-change", handler);
     }, []);
 
+    // Clear taxi extras (boot/luxury) when service or seater type doesn't match
+    useEffect(() => {
+        const allowedSeaters = ['4 Seater', '6 Seater', '12 Seater'];
+        if (selectedService !== 'taxi' || !allowedSeaters.includes(formData.seaterType)) {
+            if (formData.bigBoot || formData.smallBoot || formData.luxury) {
+                setFormData((prev) => ({ ...prev, bigBoot: false, smallBoot: false, luxury: false }));
+            }
+        }
+    }, [formData.seaterType, selectedService]);
+
 
 
 
     return (
         <div id="home" className="w-full">
             <div className="flex justify-center w-full">
-                <div className="max-w-7xl w-full flex justify-center">
-                    <HomeOptions service={selectedService} />
+                    <div className="max-w-7xl w-full flex justify-center">
+                    <HomeOptions
+                        service={selectedService}
+                        onOptionSelect={(opt) => setSelectedHomeOption(opt)}
+                        onSeaterSelect={(seat) => setFormData((prev) => ({ ...prev, seaterType: seat }))}
+                    />
                 </div>
             </div>
 
@@ -157,19 +186,62 @@ export default function Home({ selectedService = 'taxi' }) {
                 {/* BOOKING FORM */}
                 <div className="bg-white pt-8 ">
                     <div className="max-w-7xl mx-auto">
-                        <div className="bg-yellow-400 rounded-2xl shadow-xl p-8 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                        <div className="bg-yellow-400 rounded-2xl shadow-xl 
+                p-5 sm:p-8 
+                grid grid-cols-1 lg:grid-cols-2 
+                gap-8 items-center">
 
-                            {/* LEFT: FORM */}
-                            <form onSubmit={handleSubmit} className="space-y-5">
+                            <form onSubmit={handleSubmit} className="space-y-6">
+
+                                {/* TAXI EXTRAS (only shown for specific seater types) */}
+                                {selectedService === 'taxi' && ['4 Seater', '6 Seater', '12 Seater'].includes(formData.seaterType) && (
+                                    <div className="flex flex-wrap justify-center lg:justify-start gap-4 sm:gap-6">
+                                        <label className="flex items-center gap-2">
+                                            <input
+                                                id="bigBoot"
+                                                name="bigBoot"
+                                                type="checkbox"
+                                                checked={formData.bigBoot}
+                                                onChange={handleChange}
+                                                className="h-4 w-4 cursor-pointer"
+                                            />
+                                            <span>Big Boot</span>
+                                        </label>
+
+                                        <label className="flex items-center gap-2">
+                                            <input
+                                                id="smallBoot"
+                                                name="smallBoot"
+                                                type="checkbox"
+                                                checked={formData.smallBoot}
+                                                onChange={handleChange}
+                                                className="h-4 w-4 cursor-pointer"
+                                            />
+                                            <span>Small Boot</span>
+                                        </label>
+
+                                        <label className="flex items-center gap-2">
+                                            <input
+                                                id="luxury"
+                                                name="luxury"
+                                                type="checkbox"
+                                                checked={formData.luxury}
+                                                onChange={handleChange}
+                                                className="h-4 w-4 cursor-pointer"
+                                            />
+                                            <span>Luxury</span>
+                                        </label>
+                                    </div>
+                                )}
                                 <h1 className="text-3xl font-bold mb-2">
                                     {currentService.title}   {selectedHomeOption && (
-                                   <>
-                                        {selectedHomeOption} - {formData.seaterType}
-                                 </>
-                                )}
+                                        <>
+                                            {selectedHomeOption} - {formData.seaterType}
+                                        </>
+                                    )}
                                 </h1>
 
-                              
+
 
                                 {/* 
                                 {selectedHomeOption && (
@@ -213,8 +285,8 @@ export default function Home({ selectedService = 'taxi' }) {
                                         ))}
                                     </select>
                                     <select
-                                        name="CabType"
-                                        value={formData.CabType}
+                                        name="cabType"
+                                        value={formData.cabType}
                                         onChange={handleChange}
                                         className="px-4 py-3 rounded-lg outline-none"
                                     >
