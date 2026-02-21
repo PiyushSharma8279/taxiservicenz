@@ -7,44 +7,73 @@ const SERVICE_OPTIONS = {
     { label: "Riksha", img: "/riksha.png" },
   ],
   outstation: [
-    { label: "Taxi" },
-    { label: "Private" },
+    { label: "Cab", img: "/cab.png" },
+    { label: "Auto", img: "/auto.jpg" },
+    { label: "Riksha", img: "/riksha.png" },
   ],
-  carrentals: [
-    { label: "Company" },
-    { label: "Individual" },
-  ],
-  tourism: [
-    { label: "Package" },
-    { label: "Make My Own Package" },
-  ],
-  lift: [{ label: "Select City" }],
 };
 
 const CAB_SEATERS = [
   { label: "4 Seater" },
   { label: "6 Seater" },
   { label: "12 Seater" },
-];  
+];
 
-export default function HomeOptions({ service, onOptionSelect, onSeaterSelect }) {
+const OUTSTATION_CITIES = [
+  "Auckland",
+  "Wellington",
+  "Christchurch",
+  "Hamilton",
+  "Queenstown",
+];
+
+export default function HomeOptions({ service }) {
   const options = SERVICE_OPTIONS[service];
 
   const [selectedOption, setSelectedOption] = useState(null);
   const [selectedSubOption, setSelectedSubOption] = useState(null);
+  const [selectedCity, setSelectedCity] = useState("");
 
   useEffect(() => {
     setSelectedOption(null);
     setSelectedSubOption(null);
+    setSelectedCity("");
   }, [service]);
 
   if (!service || !options) return null;
 
-  
   return (
     <div className="px-4 mt-4 w-full flex flex-col items-center gap-3">
 
-      {/* 🚕 MAIN OPTIONS WITH IMAGE */}
+      {/* OUTSTATION CITY */}
+      {service === "outstation" && (
+        <select
+          value={selectedCity}
+          onChange={(e) => {
+            const city = e.target.value;
+            setSelectedCity(city);
+
+            window.dispatchEvent(
+              new CustomEvent("home-option-change", {
+                detail: {
+                  service: "outstation",
+                  city,
+                },
+              })
+            );
+          }}
+          className="px-4 py-2 rounded-full bg-yellow-100 text-yellow-800 font-semibold outline-none"
+        >
+          <option value="">Select City</option>
+          {OUTSTATION_CITIES.map((city) => (
+            <option key={city} value={city}>
+              {city}
+            </option>
+          ))}
+        </select>
+      )}
+
+      {/* MAIN OPTIONS */}
       <div className="flex gap-3 overflow-x-auto scrollbar-hide">
         {options.map((option) => {
           const isActive = selectedOption === option.label;
@@ -54,20 +83,30 @@ export default function HomeOptions({ service, onOptionSelect, onSeaterSelect })
               key={option.label}
               onClick={() => {
                 setSelectedOption(option.label);
-                setSelectedSubOption(null);
-                onOptionSelect?.(option.label);
 
-                window.dispatchEvent(
-                  new CustomEvent("home-option-change", {
-                    detail: {
-                      service,
-                      option: option.label,
-                      subOption: null,
-                    },
-                  })
-                );
+                if (service === "taxi") {
+                  window.dispatchEvent(
+                    new CustomEvent("home-option-change", {
+                      detail: {
+                        service: "taxi",
+                        vehicleType: option.label,
+                      },
+                    })
+                  );
+                }
+
+                if (service === "outstation") {
+                  window.dispatchEvent(
+                    new CustomEvent("home-option-change", {
+                      detail: {
+                        service: "outstation",
+                        vehicleType: option.label,
+                      },
+                    })
+                  );
+                }
               }}
-              className={`flex flex-col items-center justify-center  rounded-full text-xs font-semibold transition min-w-[70px]
+              className={`flex flex-col items-center justify-center rounded-full text-xs font-semibold transition min-w-[70px]
                 ${
                   isActive
                     ? "bg-yellow-200 border-2 border-yellow-500 text-yellow-900"
@@ -87,7 +126,7 @@ export default function HomeOptions({ service, onOptionSelect, onSeaterSelect })
         })}
       </div>
 
-      {/* 🚘 CAB SEATERS */}
+      {/* TAXI SEATERS */}
       {service === "taxi" && selectedOption === "Cab" && (
         <div className="flex gap-3 overflow-x-auto scrollbar-hide">
           {CAB_SEATERS.map((seat) => {
@@ -98,14 +137,12 @@ export default function HomeOptions({ service, onOptionSelect, onSeaterSelect })
                 key={seat.label}
                 onClick={() => {
                   setSelectedSubOption(seat.label);
-                  onSeaterSelect?.(seat.label);
 
                   window.dispatchEvent(
                     new CustomEvent("home-option-change", {
                       detail: {
-                        service,
-                        option: "Cab",
-                        subOption: seat.label,
+                        service: "taxi",
+                        seaterType: seat.label,
                       },
                     })
                   );

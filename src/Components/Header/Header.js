@@ -14,6 +14,7 @@ export default function Header({ onServiceChange }) {
   const services = [
     { label: "Taxi", img: "/TaxiLogo.png" },
     { label: "Outstation", img: "/outstation.png" },
+    { label: "Partial", img: "https://static.thenounproject.com/png/62578-200.png" },
     { label: "Car Rentals", img: "/car-rentals.png" },
     { label: "Tourism", img: "/tourism.png" },
     { label: "Deals", img: "/deals.png" },
